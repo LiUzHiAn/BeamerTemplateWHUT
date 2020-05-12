@@ -1,0 +1,109 @@
+%!TEX program = xelatex
+\documentclass{beamer}
+
+%%%%-----导入宏包-----%%%%
+\usepackage{xeCJK}
+\usepackage{amsmath,amsfonts,amssymb,bm}   %导入数学公式所需宏包
+\usepackage{color}			 %字体颜色支持
+\usepackage{graphicx,hyperref,url}
+\usepackage{cite} 	 % 引用参考文献
+
+\usetheme{whut}
+
+\setCJKsansfont{黑体}
+
+
+
+\title{基于Java Web的\vspace{0.3cm} \\图书管理系统设计与实现}
+\subtitle{——不止是一个图书管理系统}
+\author{\small {\url{liuzhian@whut.edu.cn} \\ 刘知安}}
+\institute{Wuhan University of Technology}
+\date{\today}
+
+\setcounter{showSlideNumbers}{1}% 显示当前幻灯片页数
+\setcounter{showProgressBar}{1} % 显示进度条
+
+% Removes icon in bibliography
+\setbeamertemplate{bibliography item}[text]
+
+\begin{document}
+	% 第一页不显示页码和底部进度条 
+	\setcounter{showProgressBar}{0}
+	\setcounter{showSlideNumbers}{0}
+	\frame{\titlepage}
+    
+
+	\begin{frame}
+		\frametitle{目录}
+		\begin{enumerate}
+			\item 选题背景 \\ \textcolor{whutGrey}{\footnotesize\hspace{1em} 第一项}
+			\item 提出的方法  \\ \textcolor{whutGrey}{\footnotesize\hspace{1em} 第二项}
+			\item 结论 \\ \textcolor{whutGrey}{\footnotesize\hspace{1em} 第三项}
+		\end{enumerate}
+	\end{frame}
+
+	\setcounter{framenumber}{0}
+	\setcounter{showProgressBar}{1}
+	\setcounter{showSlideNumbers}{1}
+
+	\section{选题背景}
+		\begin{frame}
+			\frametitle{为什么选这个题？}
+			\begin{enumerate}
+				\item 背景1 \pause
+				\item 背景2 \pause
+				\item 背景3 \pause
+			\end{enumerate}
+		\end{frame}
+
+		\begin{frame}
+			\frametitle{选题的应用价值？}
+			\begin{itemize}
+				\item 价值1
+					\begin{itemize}
+						\item 价值1.1 \pause
+						\item 价值1.2 \pause
+						\item 价值1.3 \pause
+					\end{itemize}
+				\item 价值2 \pause
+				$$
+				\int_0^1{(1-x)dx}=\frac{1}{2}
+				$$
+				\item 价值3 \pause
+					\includegraphics[width=1.7cm]{./imgs/logo.png}
+			\end{itemize}
+		\end{frame}
+	
+	\section{提出的方法}
+		\begin{frame}
+			\frametitle{理论 1}
+				理论1
+		\end{frame}
+
+		\begin{frame}
+			\frametitle{理论 2}
+				理论2
+		\end{frame}
+
+		\begin{frame}
+			\frametitle{理论 3}
+			理论3
+		\end{frame}
+
+	\section{结论}
+		\begin{frame}
+			\frametitle{总结}
+			\begin{itemize}
+				\item 多么棒的工作!
+			\end{itemize}
+		\end{frame}
+	
+	\appendix
+	\backupbegin
+	  \begin{frame}
+	    \frametitle{谢谢观看}
+	    \centering{\LARGE Thank you!}
+	  \end{frame}
+	\backupend
+
+\end{document}

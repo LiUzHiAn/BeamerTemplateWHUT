@@ -1,0 +1,174 @@
+\usepackage{tikz}  % 画图需要
+\usetikzlibrary{calc}
+\usepackage[none]{hyphenat}
+\usepackage{fontspec}
+%\defaultfontfeatures{Ligatures=TeX}
+
+\definecolor{whutBlue}{RGB}{0,64,152}
+\definecolor{whutWhite}{RGB}{255,255,255}
+\definecolor{whutBlack}{RGB}{43,40,40}
+\definecolor{whutGrey}{RGB}{107,110,108}
+
+% 把一些列表的颜色改成上面定义的颜色
+\setbeamercolor{itemize item}{fg=whutBlue}
+\setbeamercolor{enumerate item}{fg=whutBlue}
+\setbeamercolor{alerted text}{fg=whutBlue}
+\setbeamercolor{section in toc}{fg=whutsBlack}
+
+% 调整字体的大小
+\setbeamerfont{itemize/enumerate body}{size=\large}
+\setbeamerfont{itemize/enumerate subbody}{size=\normalsize}
+\setbeamerfont{itemize/enumerate subsubbody}{size=\small}
+
+% 改变无序列表每一项开头的样式成: >
+\setbeamertemplate{itemize item}{
+    \tikz{
+        \draw[fill=whutBlue,draw=none] (0, 0) rectangle(0.1, 0.1);  % no outline (draw=none)
+        \draw[fill=whutBlue,draw=none] (0.1, 0.1) rectangle(0.2, 0.2);
+        \draw[fill=whutBlue,draw=none] (0, 0.2) rectangle(0.1, 0.3);
+    }
+}
+\setbeamertemplate{itemize subitem}{
+    \tikz{
+        \draw[fill=whutBlue,draw=none] (0, 0) rectangle(0.075, 0.075);
+        \draw[fill=whutBlue,draw=none] (0.075, 0.075) rectangle(0.15, 0.15);
+        \draw[fill=whutBlue,draw=none] (0, 0.15) rectangle(0.075, 0.225);
+    }
+}
+
+% 禁用底部导航栏 
+\setbeamertemplate{navigation symbols}{}
+
+% 把beamer自定义的title page和frame title关掉，我们自己来设计
+\setbeamertemplate{title page}{}
+\setbeamertemplate{frametitle}{}
+
+% 定义一些开关
+\newcounter{showProgressBar}
+\setcounter{showProgressBar}{1}
+\newcounter{showSlideNumbers}
+\setcounter{showSlideNumbers}{1}
+\newcounter{showSlideTotal}
+\setcounter{showSlideTotal}{1}
+
+
+
+
+% 处理最后的感谢页
+\newcommand{\backupbegin}{
+   \newcounter{finalframe}
+   \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \setcounter{framenumber}{\value{finalframe}}
+}
+
+% use \makeatletter for our progress bar definitions
+% progress bar idea from http://tex.stackexchange.com/a/59749/44221
+% slightly adapted for visual purposes here
+\makeatletter
+\newcount\progressbar@tmpcounta% auxiliary counter
+\newcount\progressbar@tmpcountb% auxiliary counter
+\newdimen\progressbar@pbwidth %progressbar width
+\newdimen\progressbar@tmpdim % auxiliary dimension
+
+
+% 进度条宽度
+\progressbar@pbwidth=12.8cm
+
+% 新建一个模板
+\setbeamertemplate{background}{
+    % deal with progress bar stuff
+    % (calculate where it should go)
+    \progressbar@tmpcounta=\insertframenumber
+    \progressbar@tmpcountb=\inserttotalframenumber
+    \progressbar@tmpdim=\progressbar@pbwidth
+    \multiply\progressbar@tmpdim by \progressbar@tmpcounta
+    \divide\progressbar@tmpdim by \progressbar@tmpcountb
+
+	\begin{tikzpicture}
+	        % 把整个幻灯片设置为画布
+	        \useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+	
+	        % 背景
+	        \fill[color=whutWhite] (0,0) rectangle(12.8cm,9.6cm);
+			
+				
+			  % 如果当前是第一页
+	        \ifnum\thepage=1\relax
+	            % title page
+	            \fill[color=whutBlue] (0, 4.8cm) rectangle(12.8cm, 9.6cm);
+	             \node at (11cm,7.6cm){\includegraphics[width=3.2cm,height=3.2cm]{./imgs/logo.png}};
+	            %\node at (11.2cm,2.4cm){\includegraphics[width=3.2cm,height=3.2cm]{./imgs/logo.png}};
+	
+	            % draw the actual text
+	            \node[anchor=south,text width=12cm,inner xsep=0.5cm,align=left] at (6.4cm,5cm) {\color{whutWhite}\LARGE \textbf{\inserttitle}};
+	            \node[anchor=north east,text width=12cm,align=right] at (11.4cm,4.6cm) {\color{whutBlack}  \insertsubtitle};
+	            \node[above,text width=6cm,align=center] at(6.4cm,2cm) {\color{whutBlack}\LARGE\insertauthor};
+	            \node at (6.4cm,1.8cm) {\color{whutBlack}\insertinstitute};
+	
+	            % 在右下角添加日期
+	            \node[anchor=south east] at(12.8cm,0cm) {\color{whutGrey}\tiny\insertdate};
+					
+	        % 如果当前不是第一页
+	        \else
+	            % title bar
+	            \fill[color=whutBlue] (0, 8.2cm) rectangle(12.8cm,9.6cm);
+				   \node at (12cm,8.9cm){\includegraphics[width=1.2cm,height=1.2cm]{./imgs/logo.png}};
+					
+	            % 可以换用下面的语句，把section的标题也放到frame的title中
+	            %\node[anchor=north,text width=11.8cm,inner xsep=0.5cm,inner ysep=0.25cm] at (6.4cm,9.6cm) {\color{whutWhite}\Large\textbf{\insertsectionhead: \insertframetitle}};
+	            \node[anchor=north,text width=11.8cm,inner xsep=0.5cm,inner ysep=0.25cm] at (6.2cm,9.4cm) {\color{whutWhite}\huge\textbf{\insertframetitle}};
+	            
+				  % 如果showProgressBar变量设置为1，则显示进度条，默认在Appendix页不显示进度条
+	            \ifnum \value{showProgressBar}>0\relax%
+	                \draw[fill=whutGrey,draw=none] (0cm,0cm) rectangle(12.8cm,0.25cm); % 进度条宽度、高度
+	                \draw[fill=whutBlue,draw=none] (0cm,0cm) rectangle(\progressbar@tmpdim,0.25cm);
+	
+	                % 把section title放置在进度条的上方
+	                \node[anchor=south west] at(0cm,0.25cm) {\color{whutGrey}\tiny\insertsection};
+	                % 如果显示当前幻灯片页码
+	                \ifnum \value{showSlideNumbers}>0\relax%
+	                    % 如果显示所有幻灯片页数
+	                    \ifnum \value{showSlideTotal}>0\relax%
+	                        % draw both slide number and slide total
+	                        \node[anchor=south east] at(12.8cm,0.25cm) {\color{whutGrey}\tiny\insertframenumber/\inserttotalframenumber};
+	                    \else
+	                        % slide totals aren't active, don't draw them
+	                        \node[anchor=south east] at(12.8cm,0.25cm) {\color{whutGrey}\tiny\insertframenumber};
+	                    \fi
+	                \fi
+	            
+	            % 不显示底部进度条
+	            \else
+	                % section title in the bottom left
+	                \node[anchor=south west] at(0cm,0cm) {\color{whutGrey}\tiny\insertsection};
+	                % 如果显示当前幻灯片页码
+	                \ifnum \value{showSlideNumbers}>0\relax%
+	                    % 如果显示所有幻灯片页数
+	                    \ifnum \value{showSlideTotal}>0\relax%
+	                        % draw both slide number and slide total
+	                        \node[anchor=south east] at(12.8cm,0cm) {\color{whutGrey}\tiny\insertframenumber/\inserttotalframenumber};
+	                    \else
+	                        % slide totals aren't active, don't draw them
+	                        \node[anchor=south east] at(12.8cm,0cm) {\color{whutGrey}\tiny\insertframenumber};
+	                    \fi
+	                \fi
+	            \fi
+	       \fi
+	\end{tikzpicture}
+}
+\makeatother
+
+% 添加section 标题
+\AtBeginSection{\frame{\sectionpage}}
+\setbeamertemplate{section page}
+{
+    \begin{tikzpicture}
+        % set up the entire slide as the canvas
+        \useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+        \fill[color=whutWhite] (-1cm, 1cm) rectangle(11.8cm, 9.8cm);
+        \fill[color=whutBlue] (-1cm, 3.9cm) rectangle(11.8cm, 5.9cm);
+        \node[text width=11.8cm,align=center] at (5.4cm, 4.9cm) {\color{whutWhite}\Huge\textbf{\insertsection}};
+    \end{tikzpicture}
+}
