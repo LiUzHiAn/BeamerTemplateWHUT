@@ -6,7 +6,7 @@
 
 本模板是一个Beamer的幻灯片主题，帮助你从繁琐的样式中解脱出来，从而关注于演示文稿中的具体内容。本模板大部分来自于[Execushares模板](https://github.com/hamaluik/Beamer-Theme-Execushares)，设计得比较简洁。本模板理论上适合于大多数使用场景，例如课程设计展示、论文答辩等。
 
-![](C:\Users\Administrator\Desktop\beamerthemewhut\screenshots\screenshot1.png)
+![](./screenshots/screenshot1.png)
 
 ## 快速使用
 
